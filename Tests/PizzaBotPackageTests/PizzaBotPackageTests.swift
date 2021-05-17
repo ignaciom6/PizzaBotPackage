@@ -1,6 +1,6 @@
 import XCTest
 import class Foundation.Bundle
-@testable import PizzaBotPackageLib
+@testable import PizzaBotPackage
 
 final class PizzaBotPackageTests: XCTestCase {
     

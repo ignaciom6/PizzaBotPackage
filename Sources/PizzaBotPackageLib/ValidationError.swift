@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ValidationError: Error {
+public enum ValidationError: Error {
     case formatError
     case gridFormatError
     case pointsFormatError
@@ -16,7 +16,7 @@ enum ValidationError: Error {
 }
 
 extension ValidationError: LocalizedError {
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .formatError:
             return NSLocalizedString(

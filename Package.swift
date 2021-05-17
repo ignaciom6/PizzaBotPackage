@@ -14,9 +14,12 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "PizzaBotPackage",
+            dependencies: ["PizzaBotPackageLib"]),
+        .target(
+            name: "PizzaBotPackageLib",
             dependencies: []),
         .testTarget(
             name: "PizzaBotPackageTests",
-            dependencies: ["PizzaBotPackage"]),
+            dependencies: ["PizzaBotPackageLib"]),
     ]
 )

@@ -1,3 +1,5 @@
+import PizzaBotPackageLib
+
 if CommandLine.argc < 2 {
     print(ValidationError.commandDoesNotExist.localizedDescription)
 } else {

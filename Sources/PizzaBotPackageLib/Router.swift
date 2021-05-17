@@ -7,7 +7,8 @@
 
 import Foundation
 
-class Router {
+public class Router {
+    public init() {}
     public func getDeliveryRoute(input: String) throws -> String {
         let validator = Validator()
         guard let points = try validator.validateInput(rawInput: input) else {

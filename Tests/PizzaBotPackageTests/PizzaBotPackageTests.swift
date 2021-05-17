@@ -1,6 +1,6 @@
 import XCTest
 import class Foundation.Bundle
-@testable import PizzaBotPackage
+@testable import PizzaBotPackageLib
 
 final class PizzaBotPackageTests: XCTestCase {
     
@@ -19,34 +19,50 @@ final class PizzaBotPackageTests: XCTestCase {
     }
     
     func testEmptyGrid() {
-        XCTAssertEqual(try router.getDeliveryRoute(input: "(2,4)"), ValidationError.gridFormatError.localizedDescription)
+        XCTAssertThrowsError(try router.getDeliveryRoute(input: "(2,4)")) { error in
+            XCTAssertEqual(error as! ValidationError, ValidationError.gridFormatError)
+        }
     }
     
     func testEmptyPoints() {
-        XCTAssertEqual(try router.getDeliveryRoute(input: "5x2"), ValidationError.formatError.localizedDescription)
+        XCTAssertThrowsError(try router.getDeliveryRoute(input: "5x2")) { error in
+            XCTAssertEqual(error as! ValidationError, ValidationError.formatError)
+        }
     }
     
     func testOutOfBounds() {
-        XCTAssertEqual(try router.getDeliveryRoute(input: "1x1(2,1)"), ValidationError.outOfBoundsError.localizedDescription)
+        XCTAssertThrowsError(try router.getDeliveryRoute(input: "1x1(2,1)")) { error in
+            XCTAssertEqual(error as! ValidationError, ValidationError.outOfBoundsError)
+        }
     }
     
     func testLetterInGrid() {
-        XCTAssertEqual(try router.getDeliveryRoute(input: "ax2(1,1)"), ValidationError.formatError.localizedDescription)
+        XCTAssertThrowsError(try router.getDeliveryRoute(input: "ax2(1,1)")) { error in
+            XCTAssertEqual(error as! ValidationError, ValidationError.formatError)
+        }
     }
     
     func testExtraBracket() {
-        XCTAssertEqual(try router.getDeliveryRoute(input: "5x2((1,1)"), ValidationError.pointsFormatError.localizedDescription)
+        XCTAssertThrowsError(try router.getDeliveryRoute(input: "5x2((1,1)")) { error in
+            XCTAssertEqual(error as! ValidationError, ValidationError.pointsFormatError)
+        }
     }
     
     func testWrongSymbol() {
-        XCTAssertEqual(try router.getDeliveryRoute(input: "5*2(1,1)"), ValidationError.gridFormatError.localizedDescription)
+        XCTAssertThrowsError(try router.getDeliveryRoute(input: "5*2(1,1)")) { error in
+            XCTAssertEqual(error as! ValidationError, ValidationError.gridFormatError)
+        }
     }
     
     func testNegativeNumber() {
-        XCTAssertEqual(try router.getDeliveryRoute(input: "5x2(-1,1)"), ValidationError.pointsFormatError.localizedDescription)
+        XCTAssertThrowsError(try router.getDeliveryRoute(input: "5x2(-1,1)")) { error in
+            XCTAssertEqual(error as! ValidationError, ValidationError.pointsFormatError)
+        }
     }
     
     func testExtraCoordinate() {
-        XCTAssertEqual(try router.getDeliveryRoute(input: "5x2(1,1,2)"), ValidationError.pointsFormatError.localizedDescription)
+        XCTAssertThrowsError(try router.getDeliveryRoute(input: "5x2(1,1,2)")) { error in
+            XCTAssertEqual(error as! ValidationError, ValidationError.pointsFormatError)
+        }
     }
 }

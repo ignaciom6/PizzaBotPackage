@@ -30,7 +30,7 @@ XCode 12.4 (12D4e).
 
 ## Version
 
-PizzaBot v1.0
+PizzaBotPackage v1.0
 
 ## Authors
 

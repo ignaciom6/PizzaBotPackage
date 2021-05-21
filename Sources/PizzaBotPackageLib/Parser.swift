@@ -22,12 +22,17 @@ class Parser {
     }
     
     public func getPointFromString(coordinate: String) -> Point? {
-        let cleanCoord = coordinate.replacingOccurrences(of: ")", with: "")
-        let coordinate = cleanCoord.components(separatedBy: CharacterSet.init(charactersIn: ","))
-        if coordinate.count == 2, let x = coordinate.first, x.isNumber, let y = coordinate.last, y.isNumber {
+        let coordinates = getArrayOfCoordinates(coordinate: coordinate)
+        
+        if coordinates.count == 2, let x = coordinates.first, x.isNumber, let y = coordinates.last, y.isNumber {
             return Point(x: Int(x) ?? 0, y: Int(y) ?? 0)
         } else {
             return nil
         }
+    }
+    
+    private func getArrayOfCoordinates(coordinate: String) -> [String] {
+        let cleanCoord = coordinate.replacingOccurrences(of: ")", with: "")
+        return cleanCoord.components(separatedBy: CharacterSet.init(charactersIn: ","))
     }
 }

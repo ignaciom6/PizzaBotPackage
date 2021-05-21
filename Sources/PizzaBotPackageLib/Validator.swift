@@ -12,24 +12,14 @@ class Validator {
     let parser = Parser()
     
     public func validateInput(rawInput: String) throws -> [Point]? {
-        var result: [Point]?
         let input = rawInput.lowercased().replacingOccurrences(of: " ", with: "")
         
-        let gridSizeAndDeliveryArray = input.components(separatedBy: CharacterSet.init(charactersIn: "("))
+        let gridAndPointsArray = input.components(separatedBy: CharacterSet.init(charactersIn: "("))
         
-        let validatedGrid = try validateGridFormat(gridString: gridSizeAndDeliveryArray.first ?? "")
-        let validatedDeliveryPoints = try validateDeliveryPointsFormat(deliveryPoints: Array(gridSizeAndDeliveryArray.dropFirst()))
+        let validatedGrid = try validateGridFormat(gridString: gridAndPointsArray.first ?? "")
+        let validatedDeliveryPoints = try validateDeliveryPointsFormat(deliveryPoints: Array(gridAndPointsArray.dropFirst()))
         
-        if (validatedGrid != nil) && validatedDeliveryPoints?.count ?? 0 > 0 {
-            if pointsAreWithinGrid(points: validatedDeliveryPoints, grid: validatedGrid) {
-                result = validatedDeliveryPoints ?? []
-            } else {
-                throw ValidationError.outOfBoundsError
-            }
-        } else {
-            throw ValidationError.formatError
-        }
-        return result
+        return try getDeliveryPoints(grid: validatedGrid, points: validatedDeliveryPoints)
     }
     
     private func validateGridFormat(gridString: String) throws -> Grid? {
@@ -54,16 +44,27 @@ class Validator {
         return deliveryPointsResult
     }
     
-    func pointsAreWithinGrid(points: [Point]?, grid: Grid?) -> Bool {
+    private func getDeliveryPoints(grid: Grid?, points: [Point]?) throws -> [Point]? {
+        var result: [Point]?
+        if (grid != nil) && points?.count ?? 0 > 0 {
+            if pointsAreWithinGrid(points: points, grid: grid) {
+                result = points ?? []
+            } else {
+                throw ValidationError.outOfBoundsError
+            }
+        } else {
+            throw ValidationError.formatError
+        }
+        return result
+    }
+    
+    private func pointsAreWithinGrid(points: [Point]?, grid: Grid?) -> Bool {
         var withinGrid = true
         
         guard let points = points, let grid = grid else { return false }
         
-        for point in points {
-            if point.x > grid.width || point.y > grid.height {
-                withinGrid = false
-                break
-            }
+        if points.filter({$0.x > grid.width || $0.y > grid.height}).count > 0 {
+            withinGrid = false
         }
         
         return withinGrid

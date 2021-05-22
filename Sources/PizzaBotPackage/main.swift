@@ -1,10 +1,8 @@
 import PizzaBotPackageLib
 
-var output: String = ""
+var output = ValidationError.commandDoesNotExist.localizedDescription
 
-if CommandLine.argc < 2 {
-    output = ValidationError.commandDoesNotExist.localizedDescription
-} else {
+if CommandLine.argc == 2 {
     do {
         let router = Router()
         let input = CommandLine.arguments[1]
